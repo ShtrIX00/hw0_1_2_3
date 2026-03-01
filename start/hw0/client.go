@@ -7,8 +7,14 @@ import (
 	"os"
 )
 
+const (
+	network          = "tcp"
+	address          = "localhost:8080"
+	expectedResponse = "OK\n"
+)
+
 func main() {
-	conn, err := net.Dial("tcp", "localhost:8080")
+	conn, err := net.Dial(network, address)
 	if err != nil {
 		log.Println(err)
 		os.Exit(1)
@@ -21,7 +27,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	if string(data) != "OK\n" {
+	if string(data) != expectedResponse {
 		os.Exit(1)
 	}
 }

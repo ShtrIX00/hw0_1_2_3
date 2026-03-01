@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	listener, err := net.Listen("tcp", ":8080")
+	listener, err := net.Listen(network, address)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -18,7 +18,15 @@ func main() {
 			log.Println(err)
 			continue
 		}
-		_, _ = conn.Write([]byte("OK\n"))
-		_ = conn.Close()
+		handleConnection(conn) // можно добавить конкурентность (go), а можно и нет
+	}
+}
+
+func handleConnection(conn net.Conn) {
+	defer conn.Close()
+
+	_, err := conn.Write([]byte(expectedResponse))
+	if err != nil {
+		log.Println(err)
 	}
 }
